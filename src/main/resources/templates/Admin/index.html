@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html   lang="en"
+        xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}">
+    <title>Trang Chủ</title>
+</head>
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+<div th:replace="~{Admin/include/main-content.html :: .content}"></div>
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+</body>
+</html>

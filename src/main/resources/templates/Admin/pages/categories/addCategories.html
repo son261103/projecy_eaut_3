@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html   lang="en"
+        xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}"></head>
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+<div class="add-category-page">
+    <h2 class="add-category-title">Thêm Danh Mục Mới</h2>
+    <form action="#" th:action="@{/admin/addcategories}" method="post" th:object="${category}" class="add-category-form">
+        <div class="form-group">
+            <label for="name">Tên:</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <textarea class="form-control" id="description" th:field="*{description}"></textarea>
+        </div>
+        <div>
+            <button type="submit" class="submit-btn">Thêm Danh Mục</button>
+        </div>
+    </form>
+</div>
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+</body>
+</html>

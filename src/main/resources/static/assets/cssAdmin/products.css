@@ -1,0 +1,278 @@
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure no interfering positioning */
+body, html {
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Ensure header and other elements do not interfere */
+header, nav, aside, footer {
+    position: relative;
+    z-index: 1; /* Ensure they are not blocking content */
+}
+
+/* Main container styling */
+.products-table-container {
+    position: relative;
+    z-index: 0; /* Ensure it appears below the header and other elements */
+    width: 82% !important;
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 5rem;
+    margin-left: 16.5%;
+    overflow-x: auto; /* Ensure the table does not overflow */
+    animation: fadeInContainer 0.5s ease-out;
+}
+
+/* Page title styling */
+.products-table-container h2 {
+    color: #343a40;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff; /* Blue border to distinguish it from the edit category page */
+    padding-bottom: 10px;
+    text-align: center;
+    animation: fadeInTitle 0.7s ease-out;
+}
+
+/* Button styling */
+.products-table-container .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+    text-align: center;
+    z-index: 1; /* Ensure buttons are on top */
+}
+
+.products-table-container .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Table styling */
+.products-table {
+    width: 100%; /* Adjust the percentage as needed */
+    margin-top: 20px;
+    border-collapse: collapse;
+    animation: fadeInTable 0.8s ease-out;
+}
+
+/* Add ellipsis for overflowing text */
+.products-table th,
+.products-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #dee2e6; /* Adding border to table cells */
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden; /* Ensures content does not overflow the cell */
+    text-overflow: ellipsis; /* Adds ellipsis when content overflows */
+    position: relative; /* Ensure proper stacking context */
+}
+
+/* Ensure name column is wider */
+.products-table td:nth-child(3) { /* Tên */
+    max-width: 300px; /* Adjust the max-width as needed */
+}
+
+.products-table th {
+    background-color: #007bff;
+    font-weight: 600;
+    color: #fff;
+}
+
+.products-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s;
+}
+
+.products-table tbody tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.3s;
+}
+
+/* Image styling */
+.products-table .image_product img {
+    max-width: 100px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Hiệu ứng khi hover */
+}
+
+.products-table .image_product img:hover {
+    transform: scale(1.1); /* Hiệu ứng phóng to khi hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Edit and delete buttons */
+.products-table .btn-warning,
+.products-table .btn-danger,
+.products-table .btn-info { /* Added btn-info for "Chi tiết sản phẩm" button */
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 1; /* Ensure buttons are on top */
+}
+
+.products-table .btn-warning {
+    background-color: #ffc107; /* Yellow color for "Edit" button */
+    color: #212529;
+}
+
+.products-table .btn-warning:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.products-table .btn-danger {
+    background-color: #dc3545; /* Red color for "Delete" button */
+    color: #fff;
+}
+
+.products-table .btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Details button */
+.products-table .btn-info {
+    background-color: #17a2b8; /* Blue color for "Chi tiết sản phẩm" button */
+    color: #fff;
+}
+
+.products-table .btn-info:hover {
+    background-color: #117a8b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Clearfix for floating issues */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Màu cho các trường dữ liệu */
+.products-table tbody tr td:nth-child(4), /* Giá */
+.products-table tbody tr td:nth-child(5) { /* Số lượng tồn kho */
+    color: #007bff; /* Màu xanh dương */
+    text-align: center;
+}
+
+.products-table tbody tr td:nth-child(5) {
+    width: 2%;
+}
+.products-table tbody tr td:nth-child(1),
+.products-table tbody tr td:nth-child(3){
+    text-align: center;
+    justify-content: center;
+}
+.products-table tbody tr td:nth-child(2){
+    text-align: center;
+    justify-content: center;
+}
+.products-table tbody tr td:nth-child(7), /* Ngày cập nhật */
+.products-table tbody tr td:nth-child(8) { /* Ngày cập nhật */
+    color: #28a745; /* Màu xanh lá cây */
+    text-align: center;
+    justify-content: center;
+}
+
+.products-table tbody tr td:nth-child(10) { /* Ngày cập nhật */
+    justify-content: center;
+    text-align: center;
+}
+
+/* Thêm một hiệu ứng nhẹ cho form khi tải */
+@keyframes fadeInContainer {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInTitle {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInTable {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover effects for table rows */
+@keyframes hoverHighlight {
+    from {
+        background-color: #f8f9fa;
+    }
+    to {
+        background-color: #e9ecef;
+    }
+}
+
+.products-table tbody tr:hover {
+    animation: hoverHighlight 0.3s forwards;
+}
+
+
+.products-table .btn:hover {
+    animation: buttonBounce 0.5s;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .products-table-container h2 {
+        font-size: 20px;
+    }
+
+    .products-table th,
+    .products-table td {
+        padding: 10px 12px;
+    }
+
+    .products-table .btn-warning,
+    .products-table .btn-danger,
+    .products-table .btn-info { /* Adjusting button size for small screens */
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}

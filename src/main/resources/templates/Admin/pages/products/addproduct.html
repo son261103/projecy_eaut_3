@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}"></head>
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+<div class="container mt-5 add-product-container">
+    <h2>Thêm sản phẩm của danh mục: <span th:text="${categoryName}"></span></h2>
+    <form th:action="@{/admin/addproduct(categoryId=${categoryId})}" th:object="${product}" method="post" class="add-product-form" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Giá</label>
+            <input type="number" class="form-control" id="price" th:field="*{price}" required>
+        </div>
+        <div class="form-group">
+            <label for="stock">Số lượng tồn kho</label>
+            <input type="number" class="form-control" id="stock" th:field="*{stock}" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Chọn ảnh</label>
+            <input type="file" class="form-control-file" id="image" name="file">
+        </div>
+        <div class="form">
+            <div class="form-check">
+                <label class="form-check-label" for="isactive">Hoạt động</label>
+                <input type="checkbox" class="form-check-input" id="isactive" th:field="*{isactive}">
+            </div>
+        </div>
+        <input type="hidden" th:field="*{categoryId}" th:value="${categoryId}">
+        <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+    </form>
+</div>
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+/* Class duy nhất cho container chính của trang này */
+.categories-page {
+    max-width: 78%;
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 5rem;
+    margin-left: 18%;
+    margin-bottom: 2rem;
+    animation: slideIn 0.8s ease-out; /* Hiệu ứng trượt vào */
+}
+
+/* Class cho tiêu đề trang */
+.categories-title {
+    color: #343a40;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out; /* Hiệu ứng nổi bật */
+}
+
+/* Class cho nút "Thêm danh mục" */
+.add-category-btn {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: fit-content;
+    cursor: pointer; /* Thêm con trỏ chuột */
+}
+
+.add-category-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Hiệu ứng thu phóng */
+}
+
+.add-category-btn:active {
+    transform: scale(0.95); /* Hiệu ứng thu nhỏ khi nhấn */
+}
+
+/* Class cho bảng danh sách */
+.categories-table {
+    width: 100%;
+    border: 1px solid #dee2e6;
+    border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho toàn bộ bảng */
+}
+
+.categories-table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.categories-table th {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 12px;
+    border: 1px solid #0056b3;
+    text-align: center; /* Căn giữa tiêu đề cột */
+}
+
+.categories-table td {
+    vertical-align: middle;
+    font-size: 14px;
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    text-align: center; /* Căn giữa nội dung ô */
+}
+
+/* Làm cho hàng đầu tiên và cột đầu tiên nổi bật */
+.categories-table thead th:first-child,
+.categories-table tbody td:first-child {
+    background-color: #e9ecef;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Class cho các nút trong bảng */
+.category-btn {
+    font-size: 12px;
+    padding: 6px 12px; /* Tăng padding một chút để nút dễ nhấn hơn */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    transition: all 0.3s;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn-edit {
+    background-color: #ffc107;
+    color: #212529;
+    border: 1px solid #d39e00;
+}
+
+.category-btn-edit:hover {
+    background-color: #e0a800;
+    color: #212529;
+    text-decoration: none;
+    border-color: #ba8b00;
+    transform: translateY(-2px); /* Hiệu ứng nút nâng lên khi hover */
+}
+
+.category-btn-edit:active {
+    transform: scale(0.95); /* Hiệu ứng thu nhỏ khi nhấn */
+}
+
+.category-btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #bd2130;
+}
+
+.category-btn-delete:hover {
+    background-color: #a71d2a;
+    color: white;
+    text-decoration: none;
+    border-color: #7a1521;
+    transform: translateY(-2px);
+}
+
+.category-btn-delete:active {
+    transform: scale(0.95);
+}
+
+.category-btn-view {
+    background-color: #28a745;
+    color: white;
+    border: 1px solid #1e7e34;
+}
+
+.category-btn-view:hover {
+    background-color: #1e7e34;
+    color: white;
+    text-decoration: none;
+    border-color: #145523;
+    transform: translateY(-2px);
+}
+
+.category-btn-view:active {
+    transform: scale(0.95);
+}
+
+/* Class cho hiệu ứng hover và stripe trên hàng */
+.categories-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.categories-table tbody tr:hover {
+    background-color: #e2e6ea;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s; /* Thêm hiệu ứng chuyển động */
+}
+
+/* Thêm một hiệu ứng nhẹ cho form khi tải */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .categories-page {
+        padding: 10px;
+        max-width: 100%;
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+
+    .categories-table {
+        font-size: 12px;
+    }
+
+    .category-btn {
+        font-size: 10px;
+        padding: 6px 10px; /* Giữ padding lớn cho dễ nhấn trên mobile */
+        width: 90%; /* Mở rộng nút trên màn hình nhỏ */
+        display: block;
+        margin: 5px auto; /* Tăng khoảng cách giữa các nút trên mobile */
+    }
+
+    /* Ẩn một số cột ít quan trọng trên mobile */
+    .categories-table th:nth-child(4),
+    .categories-table th:nth-child(5),
+    .categories-table td:nth-child(4),
+    .categories-table td:nth-child(5) {
+        display: none;
+    }
+}

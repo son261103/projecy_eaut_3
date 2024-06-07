@@ -1,0 +1,56 @@
+/* Phần hiển thị ảnh sản phẩm */
+.product-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Carousel */
+.carousel {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    border-radius: 10px;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 400px; /* Điều chỉnh kích thước ảnh trong carousel */
+}
+
+/* Hiệu ứng hover cho ảnh sản phẩm */
+.product-image:hover img {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hiệu ứng zoom cho ảnh sản phẩm */
+.product-image img {
+    transition: transform 0.5s ease;
+}
+
+.product-image:hover img {
+    transform: scale(1.2);
+}
+
+/* Hiệu ứng chuyển động cho carousel */
+.carousel-item {
+    transition: transform 0.5s ease;
+}
+
+.carousel-item.active {
+    transform: scale(1.1);
+}
+
+/* Hiệu ứng bóng đổ cho carousel */
+.carousel-inner {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Hiệu ứng độ tương phản cho carousel */
+.carousel-item img {
+    filter: contrast(110%);
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}"></head>
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+<div class="products-table-container">
+    <h2>Danh sách sản phẩm của danh mục: <span th:text="${categoryName}"></span></h2>
+    <a th:href="@{/admin/addproduct(categoryId=${categoryId})}" class="btn btn-primary">Thêm sản phẩm</a>
+    <table class="table table-striped mt-3 products-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ảnh</th>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Số lượng tồn kho</th>
+            <th>Ngày cập nhật</th>
+            <th>Hoạt động</th>
+            <th>Chỉnh sửa</th>
+            <th>Xóa</th>
+            <th>Chi tiết sản phẩm</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td><img th:src="${product.image}" alt="Product Image" class="image_product" style="justify-content: center;text-align:center;width: 75px;height: 75px; border-radius: 10px;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.stock}"></td>
+            <td th:text="${product.updatedAt}"></td>
+            <td th:text="${product.isactive} ? 'Active' : 'No Active'"></td>
+            <td>
+                <a th:href="@{/admin/products/{id}/edit(id=${product.id})}" class="btn btn-warning btn-sm">Sửa</a>
+            </td>
+            <td>
+                <a href="#" class="btn btn-danger btn-sm"
+                   th:attr="onclick='confirmDelete(\'' + ${product.id} + '\');'">Xóa</a>
+            </td>
+            <!-- Trong file hiển thị sản phẩm -->
+            <td>
+                <a th:href="@{/admin/products/{id}/detail(id=${product.id})}" class="btn btn-info btn-sm">Chi tiết sản phẩm</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+<!-- JavaScript for confirmation dialog -->
+<script th:inline="javascript">
+    function confirmDelete(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
+            window.location.href = '/deleteproducts/' + id; // Chuyển hướng đến endpoint xóa
+        }
+    }
+</script>
+</body>
+</html>

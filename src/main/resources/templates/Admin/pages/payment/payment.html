@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}"></head>
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+<div class="payment-methods-table-container">
+    <h2>Danh sách phương thức thanh toán</h2>
+    <a th:href="@{/admin/addpaymentmethod/add}" class="btn btn-primary">Thêm phương thức thanh toán</a>
+    <table class="table table-striped mt-3 payment-methods-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Loại</th>
+            <th>Nhà cung cấp</th>
+            <th>Số tài khoản</th>
+            <th>Ngày hết hạn</th>
+            <th>Ngày tạo</th>
+            <th>Ngày cập nhật</th>
+            <th>Chỉnh sửa</th>
+            <th>Xóa</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="paymentMethod : ${paymentMethods}">
+            <td th:text="${paymentMethod.id}"></td>
+            <td th:text="${paymentMethod.userId}"></td>
+            <td th:text="${paymentMethod.type}"></td>
+            <td th:text="${paymentMethod.provider}"></td>
+            <td th:text="${paymentMethod.accountNo}"></td>
+            <td th:text="${paymentMethod.expiryDate}"></td>
+            <td th:text="${paymentMethod.createdAt}"></td>
+            <td th:text="${paymentMethod.updatedAt}"></td>
+            <td>
+                <a th:href="@{/admin/payment-methods/{id}/edit(id=${paymentMethod.id})}" class="btn btn-warning btn-sm">Sửa</a>
+            </td>
+            <td>
+                <a href="#" class="btn btn-danger btn-sm"
+                   th:attr="onclick='confirmDelete(\'' + ${paymentMethod.id} + '\');'">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+<!-- JavaScript for confirmation dialog -->
+<script th:inline="javascript">
+    function confirmDelete(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa phương thức thanh toán này không?')) {
+            window.location.href = '/admin/payment-methods/delete/' + id; // Chuyển hướng đến endpoint xóa
+        }
+    }
+</script>
+</body>
+</html>

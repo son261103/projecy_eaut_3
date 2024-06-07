@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Users/include/head.html :: head}">
+    <title>Trang Chủ</title>
+</head>
+<body class="template-color-1">
+<div class="main-wrapper">
+    <div th:replace="~{Users/include/popup.html :: .popup_header}"></div>
+    <div th:replace="~{Users/include/header.html :: header}"></div>
+    <div th:replace="~{Users/include/side.html :: .side}"></div>
+    <div th:replace="~{Users/include/main_content_one.html :: .content_one}"></div>
+    <div th:replace="~{Users/include/main_content_two.html :: .content_two}"></div>
+    <div th:replace="~{Users/include/main_content_three.html :: .content_three}"></div>
+    <div th:replace="~{Users/include/main_content_four.html :: .content_four}"></div>
+    <div th:replace="~{Users/include/trending.html :: .trending}"></div>
+    <div th:replace="~{Users/include/shipping.html :: .shipping}"></div>
+    <div th:replace="~{Users/include/footer.html :: .footer}"></div>
+    <div th:replace="~{Users/include/botton-footer.html :: .botton-footer}"></div>
+</div>
+</body>
+</html>

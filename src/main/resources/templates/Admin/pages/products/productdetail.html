@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}">
+    <style>
+        .carousel-inner .carousel-item img {
+            width: 100% !important;
+            height: 30rem !important; /* Điều chỉnh chiều cao của ảnh */
+            object-fit: cover; /* Đảm bảo ảnh không bị vặn hoặc căng */
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+
+<div class="container mt-5 container-producdetail">
+    <h2 class="product-detail-title">Chi tiết sản phẩm</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="product-image">
+                <div id="productCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner" id="carouselInner">
+                        <!-- Ảnh sẽ được thêm vào đây -->
+                    </div>
+                    <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Trước</span>
+                    </a>
+                    <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Sau</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="product-info">
+                <p><strong>ID: </strong> <span th:text="${productDTO.id}"></span></p>
+                <p><strong>Tên: </strong> <span th:text="${productDTO.name}"></span></p>
+                <p><strong>Mô tả: </strong> <span th:text="${productDTO.description}"></span></p>
+                <p><strong>Giá: </strong> <span th:text="${productDTO.price}"></span></p>
+                <p><strong>Số lượng tồn kho: </strong> <span th:text="${productDTO.stock}"></span></p>
+                <p><strong>Ngày tạo sản phẩm: </strong> <span th:text="${productDTO.createdAt}"></span></p>
+                <p><strong>Ngày cập nhật gần nhất</strong> <span th:text="${productDTO.updatedAt}"></span></p>
+            </div>
+            <div class="action-buttons">
+                <a th:href="@{/admin/products/{id}/edit(id=${productDTO.id})}"
+                   class="btn btn-warning btn-sm action-btn">Sửa sản phẩm</a>
+                <a href="#" class="btn btn-danger btn-sm action-btn"
+                   th:attr="onclick='confirmDelete(\'' + ${productDTO.id} + '\');'">Xóa sản phẩm</a>
+            </div>
+            <div class="action-buttons">
+                <a href="#" class="btn btn-info btn-detail btn-sm action-btn" data-toggle="modal"
+                   data-target="#addImageModal">Thêm ảnh</a>
+                <a href="#" class="btn btn btn-warning btn-sm action-btn" data-toggle="modal"
+                   data-target="#editImageModal">Sửa ảnh</a>
+                <a href="#" class="btn btn-danger btn-detail btn-sm action-btn" data-toggle="modal"
+                   data-target="#deleteImageModal">Xóa ảnh</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal để thêm ảnh -->
+<div class="modal" id="addImageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm ảnh sản phẩm</h5>
+            </div>
+            <div class="modal-body">
+                <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="addImageButton">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal để sửa ảnh -->
+<div class="modal" id="editImageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa ảnh sản phẩm</h5>
+            </div>
+            <div class="modal-body">
+                <input type="file"
+                       id="editImageUpload" name="editImageUpload" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="editImageButton">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal để xác nhận xóa ảnh -->
+<div class="modal" id="deleteImageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa ảnh sản phẩm</h5>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa ảnh này không?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="deleteImageButton">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<script th:inline="javascript">
+    var productId = /*[[${productDTO.id}]]*/;
+
+    $(document).ready(function () {
+        loadProductImages(productId);
+
+        $('#addImageModal').on('shown.bs.modal', function () {
+            $('#imageUpload').trigger('click');
+        });
+
+        $('#editImageModal').on('shown.bs.modal', function () {
+            $('#editImageUpload').trigger('click');
+        });
+
+        $('#addImageButton').click(function (event) {
+            event.preventDefault();
+            var file = $('#imageUpload')[0].files[0];
+            if (file) {
+                addImageToCarousel(productId, file);
+            } else {
+                alert("Vui lòng chọn một ảnh trước khi lưu.");
+            }
+        });
+
+        $('#editImageButton').click(function (event) {
+            event.preventDefault();
+            var file = $('#editImageUpload')[0].files[0];
+            var imageId = $('#carouselInner .carousel-item.active img').data('image-id');
+            if (file && imageId) {
+                editImageInCarousel(productId, imageId, file);
+            } else {
+                alert("Vui lòng chọn một ảnh và một ảnh để sửa trước khi lưu.");
+            }
+        });
+
+        $('#deleteImageButton').click(function (event) {
+            event.preventDefault();
+            var imageId = $('#carouselInner .carousel-item.active img').data('image-id');
+            if (imageId) {
+                deleteImageInCarousel(productId, imageId);
+            } else {
+                alert("Vui lòng chọn một ảnh để xóa.");
+            }
+        });
+    });
+
+    function loadProductImages(productId) {
+        $.ajax({
+            url: '/admin/products/' + productId + '/images',
+            type: 'GET',
+            success: function (response) {
+                var carouselInner = $('#carouselInner');
+                carouselInner.empty();
+
+                response.forEach(function (image, index) {
+                    var newSlide = $('<div class="carousel-item"></div>');
+                    var newImg = $('<img>').attr('src', image.imageUrl)
+                        .addClass(style="    max-width: 100%;\n" +
+                            "    height: 30rem; /* Điều chỉnh chiều cao tối đa của ảnh */\n" +
+                            "    margin: auto; /* Canh giữa ảnh trong carousel */")
+                        .addClass('d-block w-100')
+                        .attr('data-image-id', image.id);
+                    newSlide.append(newImg);
+
+                    if (index === 0) {
+                        newSlide.addClass('active');
+                    }
+
+                    carouselInner.append(newSlide);
+                });
+
+                $('#productCarousel').carousel('cycle');
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function addImageToCarousel(productId, file) {
+        var formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: '/admin/products/' + productId + '/images',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                loadProductImages(productId);
+                $('#addImageModal').modal('hide'); // Tắt modal sau khi thêm ảnh thành công
+                alert("Thêm ảnh thành công.");
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function editImageInCarousel(productId, imageId, file) {
+        var formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: '/admin/products/' + productId + '/images/' + imageId,
+            type: 'PUT',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                loadProductImages(productId);
+                $('#editImageModal').modal('hide'); // Tắt modal sau khi sửa ảnh thành công
+                alert("Sửa ảnh thành công.");
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function deleteImageInCarousel(productId, imageId) {
+        $.ajax({
+            url: '/admin/products/' + productId + '/images/' + imageId,
+            type: 'DELETE',
+            success: function (response) {
+                loadProductImages(productId);
+                $('#deleteImageModal').modal('hide'); // Tắt modal sau khi xóa ảnh thành công
+                alert("Xóa ảnh thành công.");
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+</body>
+</html>

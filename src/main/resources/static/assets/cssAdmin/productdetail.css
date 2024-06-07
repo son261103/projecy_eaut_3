@@ -1,0 +1,202 @@
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure no interfering positioning */
+body, html {
+    position: relative;
+    overflow-x: hidden;
+}
+
+header, nav, aside, footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Main container styling */
+.container-producdetail {
+    position: relative;
+    z-index: 0;
+    max-width: 78%;
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 5rem !important;
+    margin-left: 18%;
+    margin-bottom: 2rem;
+    animation: slideIn 0.8s ease-out; /* Hiệu ứng trượt vào */
+}
+
+/* Page title styling */
+.product-detail-title {
+    color: #343a40;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #138496;
+    padding-bottom: 15px;
+    text-align: center;
+    animation: fadeInTitle 0.7s ease-out, highlight 2s infinite; /* Hiệu ứng nổi bật */
+}
+
+/* Row styling */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    animation: fadeIn 0.7s ease-out;
+}
+
+/* Column styling */
+.col-md-6 {
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    animation: fadeInColumn 1s ease-in-out; /* Hiệu ứng mờ dần khi xuất hiện */
+}
+
+/* Product image styling */
+.product-image img {
+    max-width: 100%;
+    height: 30rem !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s; /* Hiệu ứng khi hover */
+}
+
+.product-image img:hover {
+    transform: scale(1.05); /* Hiệu ứng phóng to khi hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+.w-100{
+    height: 30rem !important;
+}
+/* Product info styling */
+.product-info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeInTable 0.7s ease-out;
+}
+
+.product-info p {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #495057;
+}
+
+.product-info p strong {
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Button styling */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.action-buttons .btn {
+    margin-left: 10px;
+}
+
+/* Action buttons */
+.action-buttons {
+    margin-top: 20px;
+}
+
+.action-buttons .btn {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: all 0.3s; /* Hiệu ứng chuyển tiếp */
+    position: relative;
+    overflow: hidden;
+}
+
+.action-buttons .btn-warning {
+    background-color: #ffc107; /* Yellow color for "Edit" button */
+    color: #ffffff;
+    border: none;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons .btn-danger {
+    background-color: #dc3545; /* Red color for "Delete" button */
+    color: #ffffff;
+    border: none;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons .btn-info {
+    background-color: #138496; /* Blue color for "Information" button */
+    color: #ffffff;
+    border: none;
+    width: 100%;
+    height: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button hover effects */
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Pseudo element for button hover effect */
+.action-buttons .btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s;
+    z-index: 1;
+}
+
+/* Move pseudo element on hover for buttons */
+.action-buttons .btn:hover::after {
+    left: 100%;
+}
+
+/* Active state styles for buttons */
+.action-buttons .btn-warning:active {
+    background-color: #e0a800;
+}
+
+.action-buttons .btn-danger:active {
+    background-color: #c82333;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        margin: 1rem 0;
+        padding: 15px;
+    }
+
+    .product-detail-title {
+        font-size: 24px;
+    }
+
+    .col-md-6 {
+        width: 100%;
+    }
+
+    .product-info {
+        padding: 15px;
+    }
+}

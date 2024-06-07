@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Admin/include/head.html :: head}"></head>
+
+<body>
+<div th:replace="~{Admin/include/header.html :: header}"></div>
+<div th:replace="~{Admin/include/side.html :: aside}"></div>
+<div>
+    <div class="categories-page">
+        <h2 class="categories-title">Danh sách danh mục</h2>
+        <a th:href="@{/admin/addcategories}" class="btn add-category-btn">Thêm danh mục</a>
+        <table class="categories-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Mô tả</th>
+                <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
+                <th>Sửa danh mục</th>
+                <th>Xóa danh mục</th>
+                <th>Chi tiết sản phẩm</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.description}"></td>
+                <td th:text="${category.createdAt}"></td>
+                <td th:text="${category.updatedAt}"></td>
+                <td>
+                    <a th:href="@{/admin/editcategories/{id}(id=${category.id})}" class="category-btn category-btn-edit">Sửa</a>
+                </td>
+                <td>
+                    <a href="#" class="category-btn category-btn-delete"
+                       th:attr="onclick='confirmDelete(\'' + ${category.id} + '\');'">Xóa</a>
+                </td>
+                <td>
+                    <a th:href="@{'/admin/products?categoryId=' + ${category.id}}" class="category-btn category-btn-view">Hiển thị sản phẩm</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{Admin/include/footer.html :: footer}"></div>
+<div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
+<!-- JavaScript for confirmation dialog -->
+<script th:inline="javascript">
+    function confirmDelete(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa danh mục này không?')) {
+            window.location.href = '/deletecategories/' + id; // Redirect to delete endpoint
+        }
+    }
+</script>
+
+</body>
+</html>

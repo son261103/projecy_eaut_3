@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{Users/include/head.html :: head}"></head>
+<body class="template-color-1">
+<div th:replace="~{Users/include/popup.html :: .popup_header}"></div>
+<div th:replace="~{Users/include/header.html :: header}"></div>
+<div th:replace="~{Users/include/side.html :: .side}"></div>
+
+<div class="main-wrapper">
+    <!-- Begin Hiraola's Login Register Area -->
+    <div class="hiraola-login-register_area">
+        <div class="container">
+            <div class="row">
+                <!-- Login Form -->
+                <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6">
+                    <form th:action="@{/users/login}" method="post" th:object="${loginUser}">
+                        <div class="login-form">
+                            <h4 class="login-title">Login</h4>
+                            <div class="row">
+                                <div class="col-md-12 col-12 mb--20">
+                                    <label>Username*</label>
+                                    <input type="text" th:field="*{username}" placeholder="Username">
+                                </div>
+                                <div class="col-12 mb--20">
+                                    <label>Password*</label>
+                                    <input type="password" th:field="*{password}" placeholder="Password">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="check-box">
+                                        <input type="checkbox" id="remember_me">
+                                        <label for="remember_me">Remember me</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="forgotton-password_info">
+                                        <a href="#">Forgotten password?</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="hiraola-login_btn">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- Register Form -->
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+                    <form th:action="@{/users/register}" method="post" th:object="${registerUser}">
+                        <div class="login-form">
+                            <h4 class="login-title">Register</h4>
+                            <div class="row">
+                                <div class="col-md-12 col-12 mb--20">
+                                    <label>Username*</label>
+                                    <input type="text" th:field="*{username}" placeholder="Username">
+                                </div>
+                                <div class="col-md-12 col-12 mb--20">
+                                    <label>Email Address*</label>
+                                    <input type="email" th:field="*{email}" placeholder="Email Address">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Password*</label>
+                                    <input type="password" th:field="*{password}" placeholder="Password">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Full Name*</label>
+                                    <input type="text" th:field="*{fullName}" placeholder="Full Name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Phone*</label>
+                                    <input type="text" th:field="*{phone}" placeholder="Phone">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Địa chỉ*</label>
+                                    <input type="text" th:field="*{address}" placeholder="Address">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Confirm Password*</label>
+                                    <input type="password" placeholder="Confirm Password">
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="hiraola-register_btn">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Hiraola's Login Register Area -->
+</div>
+<div th:replace="~{Users/include/footer.html :: .footer}"></div>
+<div th:replace="~{Users/include/botton-footer.html :: .botton-footer}"></div>
+</body>
+</html>
