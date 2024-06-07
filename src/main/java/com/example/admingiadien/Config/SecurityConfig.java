@@ -1,6 +1,5 @@
 package com.example.admingiadien.Config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,14 +19,15 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/users/register", "/users/login", "/index").permitAll()
-                        .requestMatchers("/assets/**", "/user/assets/**", "/admin/login", "/admin/register").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/users/**").hasRole("USER")
-                        .requestMatchers("/admin/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/assets/**", "/user/assets/**").permitAll()
+                        .requestMatchers("/admin/login", "/admin/register").permitAll()
+                        .requestMatchers("/admin/**").hasRole("admin")
+                        .requestMatchers("/users/**").hasRole("user")
+                        .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/users/login")
+                        .defaultSuccessUrl("/admin", true)
                         .permitAll()
                 )
                 .logout(logout ->

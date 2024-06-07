@@ -6,12 +6,12 @@
 <div th:replace="~{Admin/include/side.html :: aside}"></div>
 <div class="payment-methods-table-container">
     <h2>Danh sách phương thức thanh toán</h2>
-    <a th:href="@{/admin/addpaymentmethod/add}" class="btn btn-primary">Thêm phương thức thanh toán</a>
+    <a th:href="@{/admin/addpaymentmethod}" class="btn btn-primary">Thêm phương thức thanh toán</a>
     <table class="table table-striped mt-3 payment-methods-table">
         <thead>
         <tr>
             <th>ID</th>
-            <th>User ID</th>
+            <th>User Name</th>
             <th>Loại</th>
             <th>Nhà cung cấp</th>
             <th>Số tài khoản</th>
@@ -25,7 +25,7 @@
         <tbody>
         <tr th:each="paymentMethod : ${paymentMethods}">
             <td th:text="${paymentMethod.id}"></td>
-            <td th:text="${paymentMethod.userId}"></td>
+            <td th:text="${paymentMethod.userName}"></td> <!-- Thêm cột hiển thị tên người dùng -->
             <td th:text="${paymentMethod.type}"></td>
             <td th:text="${paymentMethod.provider}"></td>
             <td th:text="${paymentMethod.accountNo}"></td>
@@ -36,8 +36,10 @@
                 <a th:href="@{/admin/payment-methods/{id}/edit(id=${paymentMethod.id})}" class="btn btn-warning btn-sm">Sửa</a>
             </td>
             <td>
-                <a href="#" class="btn btn-danger btn-sm"
-                   th:attr="onclick='confirmDelete(\'' + ${paymentMethod.id} + '\');'">Xóa</a>
+                <form th:action="@{/admin/payment-methods/{id}/delete(id=${paymentMethod.id})}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa phương thức thanh toán này không?');">
+                    <input type="hidden" name="_method" value="post">
+                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                </form>
             </td>
         </tr>
         </tbody>
@@ -45,13 +47,5 @@
 </div>
 <div th:replace="~{Admin/include/footer.html :: footer}"></div>
 <div th:replace="~{Admin/include/botton-footer.html :: .botton-footer}"></div>
-<!-- JavaScript for confirmation dialog -->
-<script th:inline="javascript">
-    function confirmDelete(id) {
-        if (confirm('Bạn có chắc chắn muốn xóa phương thức thanh toán này không?')) {
-            window.location.href = '/admin/payment-methods/delete/' + id; // Chuyển hướng đến endpoint xóa
-        }
-    }
-</script>
 </body>
 </html>

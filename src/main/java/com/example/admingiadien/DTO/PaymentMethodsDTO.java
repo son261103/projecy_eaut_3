@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PaymentMethodsDTO {
     private Long id;
+    private String userName;
     private Long userId;
     private String type;
     private String provider;

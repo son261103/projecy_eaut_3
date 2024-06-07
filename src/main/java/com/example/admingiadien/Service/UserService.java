@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -46,11 +47,10 @@ public class UserService implements UserDetailsService {
         users.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         users.setCreatedAt(LocalDateTime.now());
         users.setUpdatedAt(LocalDateTime.now());
-        Roles role = roleRepository.findByName("User");
+        Roles role = roleRepository.findByName("user");
         if (role == null) {
             throw new RuntimeException("Không tìm thấy vai trò mặc định");
         }
-        // Cập nhật ID của vai trò tùy thuộc vào logic của ứng dụng
         users.setRole(role);
         userRepository.save(users);
         return userMapper.toDto(users);
@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
         users.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         users.setCreatedAt(LocalDateTime.now());
         users.setUpdatedAt(LocalDateTime.now());
-        Roles role = roleRepository.findByName("Admin");
+        Roles role = roleRepository.findByName("admin");
         if (role == null) {
             throw new RuntimeException("Không tìm thấy vai trò ADMIN");
         }
@@ -84,5 +84,10 @@ public class UserService implements UserDetailsService {
             return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
+    }
+
+    public boolean isAdmin(String username) {
+        Users user = userRepository.findByUsername(username);
+        return user != null && user.getRole() != null && user.getRole().getName().equals("admin");
     }
 }

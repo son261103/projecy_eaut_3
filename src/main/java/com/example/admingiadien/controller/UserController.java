@@ -3,15 +3,13 @@ package com.example.admingiadien.controller;
 import com.example.admingiadien.DTO.UsersDTO;
 import com.example.admingiadien.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class UserController {
@@ -25,20 +23,24 @@ public class UserController {
         return "Users/pages/login";
     }
 
+    @GetMapping("/admin")
+    public String defaultAfterLogin() {
+        return "redirect:/admin/index";
+    }
+
     @PostMapping("/users/login")
     public String login(@ModelAttribute("loginUser") UsersDTO userDTO, Model model) {
-        // Đoạn code đã có
-
-        // Lấy thông tin người dùng hiện tại
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        // Kiểm tra nếu là ADMIN thì chuyển hướng đến trang đăng nhập của ADMIN
-        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
-            return "redirect:/admin/login";
+        // Thực hiện xác thực thông qua UserService
+        if (userService.authenticate(userDTO.getUsername(), userDTO.getPassword())) {
+            // Kiểm tra xem tài khoản có phải là admin không và chuyển hướng tương ứng
+            if (userService.isAdmin(userDTO.getUsername())) {
+                return "redirect:/admin/index";
+            } else {
+                return "redirect:/index";
+            }
         } else {
-            // Ngược lại, chuyển hướng đến trang người dùng
-            return "redirect:/index";
+            // Xử lý trường hợp đăng nhập không thành công
+            return "redirect:/users/login";
         }
     }
 
@@ -51,35 +53,18 @@ public class UserController {
         return "redirect:/users/login"; // Redirect to login page after successful registration
     }
 
-
-    @GetMapping("/admin/login")
-    public String showAdminRegistrationForm(Model model) {
-        model.addAttribute("adminUser", new UsersDTO());
-        return "Admin/pages/loginAdmin"; // Assuming you have a separate page for admin registration
+    @GetMapping("/admin/register")
+    public String showRegisterAdmin(Model model) {
+        model.addAttribute("loginUser", new UsersDTO());
+        return "Admin/pages/loginAdmin";
     }
 
-    @PostMapping("/admin/login")
-    public String loginAdmin(@ModelAttribute("loginAdmin") UsersDTO userDTO, Model model) {
-        if (userService.authenticate(userDTO.getUsername(), userDTO.getPassword())) {
-            String role = userService.getUserRole(userDTO.getUsername());
-            if ("ADMIN".equals(role)) {
-                return "redirect:/admin/index"; // Assuming your admin dashboard is at /admin/index
-            } else {
-                return "redirect:/index"; // Redirect to home page for regular users
-            }
-        } else {
-            model.addAttribute("error", "Invalid username or password");
-            return "Users/pages/login";
-        }
+    @PostMapping("/admin/registerAdmin")
+    public String registerAdmin(@RequestBody UsersDTO userDTO) {
+        // Xử lý đăng ký admin ở đây
+        userService.saveAdmin(userDTO);
+        return "redirect:/admin/index";
     }
 
-    @PostMapping("/admin/register")
-    public String registerAdmin(@ModelAttribute("adminUser") UsersDTO adminDTO, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "Admin/pages/loginAdmin";
-        }
-        // Assuming you have a method in UserService to save admin users specifically
-        userService.saveAdmin(adminDTO);
-        return "redirect:/admin/login"; // Redirect to admin login page after successful registration
-    }
+
 }

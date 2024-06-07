@@ -22,8 +22,9 @@ public class PaymentMethods {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user; // Thêm trường tham chiếu đến người dùng
 
     @Column(name = "type")
     private String type;

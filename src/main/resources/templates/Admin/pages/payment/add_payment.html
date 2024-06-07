@@ -6,11 +6,11 @@
 <div th:replace="~{Admin/include/side.html :: aside}"></div>
 <div class="payment-method-form-container">
     <h2>Thêm phương thức thanh toán</h2>
+    <div>
+        <p>Người dùng đang đăng nhập: <span th:text="${currentUserName}"></span></p>
+    </div>
     <form th:action="@{/admin/addpaymentmethod/add}" th:object="${paymentMethod}" method="post">
-        <div class="form-group">
-            <label for="userId">User ID</label>
-            <input type="text" id="userId" th:field="*{userId}" class="form-control" required>
-        </div>
+        <input type="hidden" th:field="*{userId}" /> <!-- Ẩn trường nhập userId -->
         <div class="form-group">
             <label for="type">Loại</label>
             <input type="text" id="type" th:field="*{type}" class="form-control" required>

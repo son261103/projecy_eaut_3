@@ -16,7 +16,6 @@ public class PaymentMethodMapper implements EntityMapper<PaymentMethods, Payment
         return PaymentMethods
                 .builder()
                 .id(dto.getId())
-                .userId(dto.getUserId())
                 .type(dto.getType())
                 .provider(dto.getProvider())
                 .accountNo(dto.getAccountNo())
@@ -31,7 +30,7 @@ public class PaymentMethodMapper implements EntityMapper<PaymentMethods, Payment
         return PaymentMethodsDTO
                 .builder()
                 .id(entity.getId())
-                .userId(entity.getUserId())
+                .userId(entity.getId())
                 .type(entity.getType())
                 .provider(entity.getProvider())
                 .accountNo(entity.getAccountNo())
