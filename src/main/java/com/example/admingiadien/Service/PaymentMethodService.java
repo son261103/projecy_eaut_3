@@ -2,8 +2,10 @@ package com.example.admingiadien.Service;
 
 import com.example.admingiadien.DTO.PaymentMethodsDTO;
 import com.example.admingiadien.Entity.PaymentMethods;
+import com.example.admingiadien.Entity.Users;
 import com.example.admingiadien.Mapper.PaymentMethodMapper;
 import com.example.admingiadien.Repository.PaymentMethodRepository;
+import com.example.admingiadien.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +24,7 @@ import java.util.Optional;
 public class PaymentMethodService {
     private final PaymentMethodRepository paymentMethodRepository;
     private final PaymentMethodMapper paymentMethodMapper;
-
+    private final UserRepository userRepository;
 
     // Phương thức hiển thị tất cả phương thức thanh toán
     public List<PaymentMethodsDTO> showAllPaymentMethods() {
@@ -76,20 +78,17 @@ public class PaymentMethodService {
     // Phương thức chỉnh sửa một phương thức thanh toán
     @Transactional
     public void editPaymentMethod(PaymentMethodsDTO paymentMethodsDTO) {
-        // Kiểm tra quyền truy cập của người dùng
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        if (!username.equals(paymentMethodsDTO.getUserName())) {
-            throw new RuntimeException("You don't have permission to edit this payment method");
-        }
+        // Lấy thông tin phương thức thanh toán cần chỉnh sửa
+        PaymentMethods paymentMethod = paymentMethodRepository.findById(paymentMethodsDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Payment method not found"));
+
         // Chuyển đổi DTO thành đối tượng thực thể
-        PaymentMethods paymentMethod = paymentMethodMapper.toEntity(paymentMethodsDTO);
+        paymentMethod = paymentMethodMapper.toEntity(paymentMethodsDTO);
         // Thiết lập thời gian cập nhật
         paymentMethod.setUpdatedAt(LocalDateTime.now());
         // Lưu phương thức thanh toán vào cơ sở dữ liệu
         paymentMethodRepository.save(paymentMethod);
     }
-
 
     @Transactional
     public void deletePaymentMethodById(Long id) {

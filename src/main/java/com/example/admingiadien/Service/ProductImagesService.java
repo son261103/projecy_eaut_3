@@ -67,4 +67,8 @@ public class ProductImagesService {
         productImagesRepository.delete(productImage);
     }
 
+    public List<ProductImages> getProductImagesByProductId(Long productId) {
+        return productImagesRepository.findByProductsId(productId);
+    }
+
 }

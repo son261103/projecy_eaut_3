@@ -3,6 +3,8 @@ package com.example.admingiadien.controller;
 import com.example.admingiadien.DTO.UsersDTO;
 import com.example.admingiadien.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,24 +25,30 @@ public class UserController {
         return "Users/pages/login";
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/defaul")
     public String defaultAfterLogin() {
-        return "redirect:/admin/index";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getAuthorities() != null) {
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("Admin"));
+            if (isAdmin) {
+                return "redirect:/admin/index";
+            }
+        }
+        return "redirect:/index";
     }
 
     @PostMapping("/users/login")
     public String login(@ModelAttribute("loginUser") UsersDTO userDTO, Model model) {
-        // Thực hiện xác thực thông qua UserService
         if (userService.authenticate(userDTO.getUsername(), userDTO.getPassword())) {
-            // Kiểm tra xem tài khoản có phải là admin không và chuyển hướng tương ứng
             if (userService.isAdmin(userDTO.getUsername())) {
                 return "redirect:/admin/index";
             } else {
                 return "redirect:/index";
             }
         } else {
-            // Xử lý trường hợp đăng nhập không thành công
-            return "redirect:/users/login";
+            model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
+            return "Users/pages/login";
         }
     }
 
@@ -50,21 +58,19 @@ public class UserController {
             return "Users/pages/login";
         }
         userService.saveUser(userDTO);
-        return "redirect:/users/login"; // Redirect to login page after successful registration
+        return "redirect:/users/login";
     }
 
     @GetMapping("/admin/register")
     public String showRegisterAdmin(Model model) {
-        model.addAttribute("loginUser", new UsersDTO());
+        model.addAttribute("registerUser", new UsersDTO());
         return "Admin/pages/loginAdmin";
     }
 
     @PostMapping("/admin/registerAdmin")
-    public String registerAdmin(@RequestBody UsersDTO userDTO) {
-        // Xử lý đăng ký admin ở đây
+    public String registerAdmin(@ModelAttribute("registerUser") UsersDTO userDTO) {
         userService.saveAdmin(userDTO);
         return "redirect:/admin/index";
     }
-
 
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,8 +35,9 @@ public class Products {
     @Column(name = "stock")
     private Integer stock;
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Categories category;
 
     @Column(name = "isactive")
     private Boolean isactive;
@@ -51,4 +53,5 @@ public class Products {
 
     @Column(name = "image_description")
     private String imageDescription;
+
 }

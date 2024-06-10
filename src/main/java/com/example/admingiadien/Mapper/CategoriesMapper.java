@@ -36,19 +36,16 @@ public class CategoriesMapper implements EntityMapper<Categories, CategoriesDTO>
     }
 
     @Override
-    public List<Categories> toEntity(List<CategoriesDTO> Dto) {
-        return List.of();
+    public List<Categories> toEntity(List<CategoriesDTO> dtos) {
+        List<Categories> entities = new ArrayList<>();
+        dtos.forEach(dto -> entities.add(toEntity(dto)));
+        return entities;
     }
 
     @Override
-    public List<CategoriesDTO> toDto(List<Categories> entity) {
+    public List<CategoriesDTO> toDto(List<Categories> entities) {
         List<CategoriesDTO> dtos = new ArrayList<>();
-        entity.forEach(Categori ->
-                {
-                    CategoriesDTO categoriesDTO = toDto(Categori);
-                    dtos.add(categoriesDTO);
-                }
-                );
+        entities.forEach(entity -> dtos.add(toDto(entity)));
         return dtos;
     }
 }

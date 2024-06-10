@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
         // Tạo UserDetails từ thông tin của Users
         return User.withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getRole().getName()) // Set role(s) here if needed
+                .authorities(user.getRole().getName()) // Sử dụng "authorities" thay vì "roles" nếu không có tiền tố "ROLE_"
                 .build();
     }
 
@@ -47,7 +47,7 @@ public class UserService implements UserDetailsService {
         users.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         users.setCreatedAt(LocalDateTime.now());
         users.setUpdatedAt(LocalDateTime.now());
-        Roles role = roleRepository.findByName("user");
+        Roles role = roleRepository.findByName("USER");
         if (role == null) {
             throw new RuntimeException("Không tìm thấy vai trò mặc định");
         }
@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
         users.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         users.setCreatedAt(LocalDateTime.now());
         users.setUpdatedAt(LocalDateTime.now());
-        Roles role = roleRepository.findByName("admin");
+        Roles role = roleRepository.findByName("ADMIN");
         if (role == null) {
             throw new RuntimeException("Không tìm thấy vai trò ADMIN");
         }
@@ -88,6 +88,6 @@ public class UserService implements UserDetailsService {
 
     public boolean isAdmin(String username) {
         Users user = userRepository.findByUsername(username);
-        return user != null && user.getRole() != null && user.getRole().getName().equals("admin");
+        return user != null && user.getRole() != null && user.getRole().getName().equalsIgnoreCase("ADMIN");
     }
 }

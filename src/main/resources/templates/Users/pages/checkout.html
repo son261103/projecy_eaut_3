@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+<div th:replace="~{Users/include/popup.html :: .popup_header}"></div>
+<div th:replace="~{Users/include/header.html :: header}"></div>
+<div th:replace="~{Users/include/cart.html :: #miniCart}"></div>
+<div th:replace="~{Users/include/header_two.html :: .header-two}"></div>
+<div class="main-wrapper">
+    <!-- Nội dung khác -->
+    <div class="cart-container">
+        <!-- Giỏ hàng sẽ được thêm động ở đây -->
+    </div>
+    <!-- Các nút và thông tin thanh toán khác -->
+</div>
+<!-- Liên kết tới file JavaScript -->
+<div th:replace="~{Users/include/footer.html :: .footer}"></div>
+<div th:replace="~{Users/include/botton-footer.html :: .botton-footer}"></div>
+</body>
+</html>

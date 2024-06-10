@@ -35,8 +35,161 @@
     <script th:src="@{/user/assets/js/plugins/timecircles.min.js}"></script>
     <!-- Mailchimp Ajax js -->
     <script th:src="@{/user/assets/js/plugins/mailchimp-ajax.js}"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js}"></script>
 
     <!-- Main js -->
     <script th:src="@{/user/assets/js/main.js}"></script>
     <!-- <script th:src="/user/assets/js/main.min.js"></script> -->
+    <script>
+        // Hàm thiết lập cookie
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // Hàm lấy giá trị cookie
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Hàm xóa cookie
+        function eraseCookie(name) {
+            document.cookie = name + '=; Max-Age=-99999999;';
+        }
+
+        // Hàm kiểm tra xem cookie giỏ hàng có tồn tại không và lấy dữ liệu
+        function loadCart() {
+            var cart = getCookie("cart");
+            if (cart) {
+                try {
+                    return JSON.parse(cart);
+                } catch (e) {
+                    console.error("Giỏ hàng không hợp lệ trong cookie, đặt lại giỏ hàng.");
+                    eraseCookie("cart");
+                    return [];
+                }
+            } else {
+                return [];
+            }
+        }
+
+        // Hàm lưu giỏ hàng vào cookie
+        function saveCart(cart) {
+            setCookie("cart", JSON.stringify(cart), 1);
+        }
+
+        // Hàm cập nhật giỏ hàng trên giao diện
+        function updateCartDisplay(cart) {
+            $('#cart-list').empty();
+            var totalQuantity = 0;
+            var totalPrice = 0;
+
+            // Tạo đối tượng lưu trữ sản phẩm và số lượng
+            var productCounts = {};
+
+            cart.forEach(function(item) {
+                if (item.quantity > 0) {
+                    var itemPrice = item.price ? parseFloat(item.price) : 0;
+
+                    // Cập nhật số lượng của sản phẩm trong đối tượng productCounts
+                    var productKey = item.name; // Sử dụng tên sản phẩm làm khóa
+                    if (productCounts[productKey]) {
+                        productCounts[productKey].quantity += item.quantity;
+                    } else {
+                        productCounts[productKey] = {
+                            name: item.name,
+                            price: itemPrice,
+                            quantity: item.quantity,
+                            image: item.image
+                        };
+                    }
+
+                    totalQuantity += item.quantity;
+                    totalPrice += itemPrice * item.quantity;
+                }
+            });
+
+            // Hiển thị danh sách sản phẩm
+            for (const productKey in productCounts) {
+                const product = productCounts[productKey];
+                var cartItemHTML = '<li>' +
+                    '<div class="item-thumbnail">' +
+                    '<img src="' + product.image + '" alt="Product Image">' +
+                    '</div>' +
+                    '<div class="item-details">' +
+                    '<span class="item-name">' + product.name + '</span>' +
+                    '<span class="item-price">$' + product.price.toFixed(2) + '</span>' +
+                    '<span class="item-quantity">Số lượng: ' + product.quantity + '</span>' +
+                    '</div>' +
+                    '</li>';
+
+                $('#cart-list').append(cartItemHTML);
+            }
+
+            $('.quantity-count').text(totalQuantity);
+            $('.ammount').text('$' + totalPrice.toFixed(2));
+        }
+
+        // Đặt sự kiện click cho nút "Thêm vào giỏ hàng"
+        $('.add-to-cart-btn').click(function(e) {
+            // Ngăn chặn hành vi mặc định của nút
+            e.preventDefault();
+
+            // Lấy thông tin sản phẩm từ các phần tử HTML tương ứng
+            var productImageSrc = $(this).closest('.sp-area').find('#gallery .active img').attr('src');
+            console.log("Đường dẫn ảnh:", productImageSrc);
+            var productName = $(this).closest('.sp-content').find('.sp-heading h5 a').text();
+            var productPriceText = $(this).closest('.sp-content').find('.sp-essential_stuff li:nth-child(1) a').text();
+            var productQuantity = parseInt($(this).closest('.sp-content').find('.cart-plus-minus-box').val());
+
+            // Chuyển đổi giá từ chuỗi văn bản sang số
+            var productPrice = parseFloat(productPriceText.replace('$', ''));
+
+            // Lấy giỏ hàng từ cookie
+            var cart = loadCart();
+
+            // Tìm sản phẩm trong giỏ hàng
+            var existingProductIndex = cart.findIndex(item => item.name === productName);
+
+            if (existingProductIndex !== -1) {
+                // Cập nhật số lượng sản phẩm nếu sản phẩm đã tồn tại trong giỏ hàng
+                cart[existingProductIndex].quantity += productQuantity;
+            } else {
+                // Thêm sản phẩm mới vào giỏ hàng
+                var product = {
+                    name: productName,
+                    price: productPrice,
+                    quantity: productQuantity,
+                    image: productImageSrc
+                };
+                cart.push(product);
+            }
+
+            // Lưu giỏ hàng vào cookie
+            saveCart(cart);
+
+            // Cập nhật hiển thị giỏ hàng
+            updateCartDisplay(cart);
+        });
+
+        // Khi trang tải lại, tải giỏ hàng từ cookie và cập nhật hiển thị
+        $(document).ready(function() {
+            var cart = loadCart();
+            updateCartDisplay(cart);
+        });
+    </script>
+
+
 </div>
